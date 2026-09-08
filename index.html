@@ -177,10 +177,13 @@
   font-display: swap;
   font-weight: 400;
 }
+#pixel-glass { position:fixed; inset:0; width:100%; height:100%; z-index:0; display:none; image-rendering:pixelated; image-rendering:crisp-edges; }
+body[data-theme="pixel"] #pixel-glass { display:block; }
+body[data-theme="pixel"] #glass { visibility:hidden; }
 #glass { position:fixed; inset:0; width:100%; height:100%; z-index:0; display:none; background:#22232b; }
-body[data-theme="glass"] #glass { display:block; }
-body[data-theme="glass"] #backdrop { display:none; }
-body[data-theme="glass"] #app {
+body:is([data-theme="glass"],[data-theme="pixel"]) #glass { display:block; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #backdrop { display:none; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #app {
   grid-template-columns:minmax(0,1fr) minmax(0,38vw);
   grid-template-rows:minmax(0,1fr);
   align-items:center;
@@ -188,21 +191,21 @@ body[data-theme="glass"] #app {
   padding-left:max(34px,env(safe-area-inset-left));
   padding-right:max(34px,env(safe-area-inset-right));
 }
-body[data-theme="glass"] #art-wrap { padding-top:0; justify-content:flex-end; }
-body[data-theme="glass"] #art { width:min(57vw,78vh); height:auto; aspect-ratio:1; }
-body[data-theme="glass"] #meta { align-self:end; padding-bottom:5vh; }
-body[data-theme="glass"] #title { white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
-body[data-theme="glass"] #artist { white-space:normal; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #art-wrap { padding-top:0; justify-content:flex-end; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #art { width:min(57vw,78vh); height:auto; aspect-ratio:1; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #meta { align-self:end; padding-bottom:5vh; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #title { white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #artist { white-space:normal; }
 
-body[data-theme="glass"] #title,
-body[data-theme="glass"] #artist {
+body:is([data-theme="glass"],[data-theme="pixel"]) #title,
+body:is([data-theme="glass"],[data-theme="pixel"]) #artist {
   font-family:"Fayte Pixel Soft",Georgia,serif;
   font-weight:400;
   font-synthesis:none;
   letter-spacing:0;
 }
-body[data-theme="glass"] #title { font-size:clamp(88px,14.8vw,208px); line-height:1.08; }
-body[data-theme="glass"] #artist { color:#ece3c8; font-size:clamp(58px,8.4vw,110px); line-height:1.15; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #title { font-size:clamp(88px,14.8vw,208px); line-height:1.08; }
+body:is([data-theme="glass"],[data-theme="pixel"]) #artist { color:#ece3c8; font-size:clamp(58px,8.4vw,110px); line-height:1.15; }
 #tapzone { width:54px; height:54px; padding:0; margin:0; border-radius:0; background:transparent; color:white; opacity:.18; font-size:24px; z-index:11; }
 #tapzone:hover,#tapzone:focus-visible { opacity:1; }
 #menu { top:58px; width:min(310px,calc(100vw - 36px)); padding:18px; background:#18181df2; z-index:12; visibility:hidden; }
@@ -219,6 +222,7 @@ body[data-theme="glass"] #artist { color:#ece3c8; font-size:clamp(58px,8.4vw,110
 </head>
 <body>
   <div id="backdrop"></div>
+  <canvas id="pixel-glass" aria-hidden="true"></canvas>
   <svg id="glass" viewBox="0 0 100 75" preserveAspectRatio="none" aria-hidden="true"></svg>
 
   <main id="app">
@@ -232,7 +236,7 @@ body[data-theme="glass"] #artist { color:#ece3c8; font-size:clamp(58px,8.4vw,110
   <button id="tapzone" aria-label="Appearance and settings" aria-controls="menu" aria-expanded="false">⋯</button>
   <div id="menu">
     <label for="theme-choice">Appearance</label>
-    <select id="theme-choice"><option value="glass">Stained Glass</option><option value="current">Basic</option></select>
+    <select id="theme-choice"><option value="glass">Stained Glass</option><option value="pixel">Pixel Stained Glass</option><option value="current">Basic</option></select>
     <button id="logout">Reset Spotify login</button>
   </div>
 
@@ -289,11 +293,48 @@ function glassCells() {
 }
 const paneGeometry=glassCells();
 function renderGlass() {
+  if(document.body.dataset.theme==='pixel')renderPixelGlass();
   const rgb=(c)=>`rgb(${c.map(v=>Math.max(0,Math.min(255,Math.round(v)))).join(',')})`;
   const gradients=glassPalette.map((c,i)=>`<linearGradient id="pane-${i}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${rgb(c.map(v=>v*1.12))}"/><stop offset="1" stop-color="${rgb(c.map(v=>v*.82))}"/></linearGradient>`).join('');
   const panes=paneGeometry.map((poly,i)=>`<polygon points="${poly.map(p=>p.map(v=>v.toFixed(3)).join(',')).join(' ')}" fill="url(#pane-${(i*7+Math.floor(i/7)*3)%glassPalette.length})" stroke="#17161e" stroke-width=".42" stroke-linejoin="round"/>`).join('');
   glass.innerHTML=`<defs>${gradients}<linearGradient id="glass-shade" x1="0" y1="0" x2="0" y2="1"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient></defs>${panes}<rect width="100" height="75" fill="url(#glass-shade)"/>`;
 }
+// Render at a deliberately small resolution; CSS scales whole square pixels.
+function renderPixelGlass() {
+  const canvas=$("pixel-glass"),w=240,h=Math.max(90,Math.min(400,Math.round(w*innerHeight/innerWidth)));
+  canvas.width=w;canvas.height=h;
+  const ctx=canvas.getContext('2d'),frame=ctx.createImageData(w,h);
+  const bayer=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++) {
+    const px=(x+.5)*100/w,py=(y+.5)*75/h;
+    let pane=0,edge=Infinity;
+    for(let i=0;i<paneGeometry.length;i++) {
+      const poly=paneGeometry[i];let inside=false;
+      for(let a=0,b=poly.length-1;a<poly.length;b=a++) {
+        const u=poly[a],v=poly[b];
+        if((u[1]>py)!==(v[1]>py)&&px<(v[0]-u[0])*(py-u[1])/(v[1]-u[1])+u[0])inside=!inside;
+      }
+      if(!inside)continue;
+      pane=i;
+      for(let a=0;a<poly.length;a++) {
+        const u=poly[a],v=poly[(a+1)%poly.length],dx=v[0]-u[0],dy=v[1]-u[1];
+        const t=Math.max(0,Math.min(1,((px-u[0])*dx+(py-u[1])*dy)/(dx*dx+dy*dy)));
+        edge=Math.min(edge,Math.hypot(px-u[0]-t*dx,py-u[1]-t*dy));
+      }
+      break;
+    }
+    const base=glassPalette[(pane*7+Math.floor(pane/7)*3)%glassPalette.length];
+    const ramp=1.10-.27*y/h+.06*Math.sin(x/23+pane);
+    const scaled=ramp*5,shade=(Math.floor(scaled)+(scaled%1>bayer[y%4][x%4]/16?1:0))/5;
+    const bottom=1-.48*Math.max(0,(y/h-.5)*2);
+    const offset=(y*w+x)*4;
+    for(let k=0;k<3;k++) frame.data[offset+k]=edge<.48?[20,23,34][k]:Math.round(base[k]*shade*bottom);
+    frame.data[offset+3]=255;
+  }
+  ctx.putImageData(frame,0,0);
+}
+let pixelResize;
+addEventListener('resize',()=>{clearTimeout(pixelResize);pixelResize=setTimeout(()=>{if(document.body.dataset.theme==='pixel')renderPixelGlass();},120);});
 function updateGlassPalette(data) {
   const buckets=new Map();
   for(let i=0;i<data.length;i+=4) {
@@ -319,8 +360,9 @@ function updateGlassPalette(data) {
   renderGlass();
 }
 function setTheme(theme) {
-  const chosen=theme==='current'?'current':'glass';
+  const chosen=['current','glass','pixel'].includes(theme)?theme:'glass';
   document.body.dataset.theme=chosen;
+  if(chosen==='pixel') renderPixelGlass();
   $("theme-choice").value=chosen;
   try{localStorage.setItem('spotify_display_theme',chosen);}catch{}
 }
