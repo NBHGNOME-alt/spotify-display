@@ -180,6 +180,20 @@
 #glass { position:fixed; inset:0; width:100%; height:100%; z-index:0; display:none; background:#22232b; }
 body[data-theme="glass"] #glass { display:block; }
 body[data-theme="glass"] #backdrop { display:none; }
+body[data-theme="glass"] #app {
+  grid-template-columns:minmax(0,1fr) minmax(0,38vw);
+  grid-template-rows:minmax(0,1fr);
+  align-items:center;
+  gap:4.5vw;
+  padding-left:max(34px,env(safe-area-inset-left));
+  padding-right:max(34px,env(safe-area-inset-right));
+}
+body[data-theme="glass"] #art-wrap { padding-top:0; justify-content:flex-end; }
+body[data-theme="glass"] #art { width:min(57vw,78vh); height:auto; aspect-ratio:1; }
+body[data-theme="glass"] #meta { align-self:end; padding-bottom:5vh; }
+body[data-theme="glass"] #title { white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+body[data-theme="glass"] #artist { white-space:normal; }
+
 body[data-theme="glass"] #title,
 body[data-theme="glass"] #artist {
   font-family:"Fayte Pixel Soft",Georgia,serif;
