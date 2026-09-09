@@ -178,20 +178,20 @@
   font-weight: 400;
 }
 #pixel-glass { position:fixed; inset:0; width:100%; height:100%; z-index:0; display:none; image-rendering:pixelated; image-rendering:crisp-edges; }
-body[data-theme="pixel"] #pixel-glass { display:block; }
-body[data-theme="pixel"] #glass { visibility:hidden; }
+body:is([data-theme="pixel"],[data-theme="pixel-v2"]) #pixel-glass { display:block; }
+body:is([data-theme="pixel"],[data-theme="pixel-v2"]) #glass { visibility:hidden; }
 #glass { position:fixed; inset:0; width:100%; height:100%; z-index:0; display:none; background:#22232b; }
-body:is([data-theme="glass"],[data-theme="pixel"]) #glass { display:block; }
-body:is([data-theme="glass"],[data-theme="pixel"]) #backdrop { display:none; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #glass { display:block; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #backdrop { display:none; }
 /* Continue the patterned background through the iPad bottom safe area. */
-body:is([data-theme="glass"],[data-theme="pixel"]) #glass,
-body:is([data-theme="glass"],[data-theme="pixel"]) #pixel-glass {
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #glass,
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #pixel-glass {
   bottom:auto;
   height:calc(100% + env(safe-area-inset-bottom,0px));
   min-height:100lvh;
 }
 
-body:is([data-theme="glass"],[data-theme="pixel"]) #app {
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #app {
   grid-template-columns:minmax(0,1fr) minmax(0,38vw);
   grid-template-rows:minmax(0,1fr);
   align-items:center;
@@ -199,21 +199,32 @@ body:is([data-theme="glass"],[data-theme="pixel"]) #app {
   padding-left:max(34px,env(safe-area-inset-left));
   padding-right:max(34px,env(safe-area-inset-right));
 }
-body:is([data-theme="glass"],[data-theme="pixel"]) #art-wrap { padding-top:0; justify-content:flex-end; }
-body:is([data-theme="glass"],[data-theme="pixel"]) #art { width:min(57vw,78vh); height:auto; aspect-ratio:1; }
-body:is([data-theme="glass"],[data-theme="pixel"]) #meta { align-self:end; padding-bottom:5vh; }
-body:is([data-theme="glass"],[data-theme="pixel"]) #title { white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
-body:is([data-theme="glass"],[data-theme="pixel"]) #artist { white-space:normal; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #art-wrap { padding-top:0; justify-content:flex-end; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #art { width:min(57vw,78vh); height:auto; aspect-ratio:1; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #meta { align-self:end; padding-bottom:5vh; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #title { white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #artist { white-space:normal; }
 
-body:is([data-theme="glass"],[data-theme="pixel"]) #title,
-body:is([data-theme="glass"],[data-theme="pixel"]) #artist {
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #title,
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #artist {
   font-family:"Fayte Pixel Soft",Georgia,serif;
   font-weight:400;
   font-synthesis:none;
   letter-spacing:0;
 }
-body:is([data-theme="glass"],[data-theme="pixel"]) #title { font-size:clamp(44px,7.4vw,104px); line-height:1.08; }
-body:is([data-theme="glass"],[data-theme="pixel"]) #artist { color:#ece3c8; font-size:clamp(29px,4.2vw,55px); line-height:1.15; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #title { font-size:clamp(44px,7.4vw,104px); line-height:1.08; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #artist { color:#ece3c8; font-size:clamp(29px,4.2vw,55px); line-height:1.15; }
+body[data-theme="pixel-v2"] #title {
+  font-size:clamp(22px,3.7vw,52px);
+  line-height:1.15;
+  display:block;
+  -webkit-line-clamp:unset;
+  white-space:normal;
+  overflow:visible;
+  overflow-wrap:anywhere;
+  text-overflow:clip;
+}
+body[data-theme="pixel-v2"] #meta { max-height:100%; overflow-y:auto; }
 #tapzone { width:54px; height:54px; padding:0; margin:0; border-radius:0; background:transparent; color:white; opacity:.18; font-size:24px; z-index:11; }
 #tapzone:hover,#tapzone:focus-visible { opacity:1; }
 #menu { top:58px; width:min(310px,calc(100vw - 36px)); padding:18px; background:#18181df2; z-index:12; visibility:hidden; }
@@ -244,7 +255,7 @@ body:is([data-theme="glass"],[data-theme="pixel"]) #artist { color:#ece3c8; font
   <button id="tapzone" aria-label="Appearance and settings" aria-controls="menu" aria-expanded="false">⋯</button>
   <div id="menu">
     <label for="theme-choice">Appearance</label>
-    <select id="theme-choice"><option value="glass">Stained Glass</option><option value="pixel">Pixel Stained Glass</option><option value="current">Basic</option></select>
+    <select id="theme-choice"><option value="glass">Stained Glass</option><option value="pixel">Pixel Stained Glass</option><option value="pixel-v2">Pixel Glass v2</option><option value="current">Basic</option></select>
     <button id="logout">Reset Spotify login</button>
   </div>
 
@@ -302,6 +313,7 @@ function glassCells() {
 const paneGeometry=glassCells();
 function renderGlass() {
   if(document.body.dataset.theme==='pixel')renderPixelGlass();
+  if(document.body.dataset.theme==='pixel-v2')renderPixelGlassV2();
   const rgb=(c)=>`rgb(${c.map(v=>Math.max(0,Math.min(255,Math.round(v)))).join(',')})`;
   const gradients=glassPalette.map((c,i)=>`<linearGradient id="pane-${i}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${rgb(c.map(v=>v*1.12))}"/><stop offset="1" stop-color="${rgb(c.map(v=>v*.82))}"/></linearGradient>`).join('');
   const panes=paneGeometry.map((poly,i)=>`<polygon points="${poly.map(p=>p.map(v=>v.toFixed(3)).join(',')).join(' ')}" fill="url(#pane-${(i*7+Math.floor(i/7)*3)%glassPalette.length})" stroke="#17161e" stroke-width=".42" stroke-linejoin="round"/>`).join('');
@@ -341,8 +353,88 @@ function renderPixelGlass() {
   }
   ctx.putImageData(frame,0,0);
 }
+// Uneven cut-glass panels, deliberately unlike the regular Voronoi cells in v1.
+function pixelV2Cells() {
+  let seed=91426;
+  const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+  const area=p=>Math.abs(p.reduce((a,v,i)=>{const q=p[(i+1)%p.length];return a+v[0]*q[1]-q[0]*v[1];},0))/2;
+  const clip=(poly,nx,ny,c)=>{
+    const out=[];
+    for(let i=0;i<poly.length;i++) {
+      const a=poly[i],b=poly[(i+1)%poly.length],da=a[0]*nx+a[1]*ny-c,db=b[0]*nx+b[1]*ny-c;
+      if(da<=0)out.push(a);
+      if((da<=0)!==(db<=0)){const t=da/(da-db);out.push([a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])]);}
+    }
+    return out;
+  };
+  const cells=[[[0,0],[100,0],[100,75],[0,75]]];
+  for(let step=0;cells.length<28&&step<140;step++) {
+    const ranked=cells.map((p,i)=>({i,a:area(p)})).sort((a,b)=>b.a-a.a);
+    const pick=ranked[Math.floor(rand()*Math.min(3,ranked.length))];
+    const poly=cells[pick.i],angle=rand()*Math.PI,nx=Math.cos(angle),ny=Math.sin(angle);
+    const projected=poly.map(p=>p[0]*nx+p[1]*ny),lo=Math.min(...projected),hi=Math.max(...projected);
+    const c=lo+(hi-lo)*(.25+rand()*.5),a=clip(poly,nx,ny,c),b=clip(poly,-nx,-ny,-c);
+    if(area(a)<65||area(b)<65)continue;
+    cells.splice(pick.i,1,a,b);
+  }
+  return cells;
+}
+const pixelV2Geometry=pixelV2Cells();
+let pixelV2Cache;
+function renderPixelGlassV2() {
+  const canvas=$("pixel-glass"),w=600,h=Math.max(240,Math.min(1000,Math.round(w*innerHeight/innerWidth)));
+  canvas.width=w;canvas.height=h;
+  const ctx=canvas.getContext('2d');
+  if(!pixelV2Cache||pixelV2Cache.w!==w||pixelV2Cache.h!==h) {
+    const panes=new Uint8Array(w*h),shades=new Float32Array(w*h);
+    // Shared coordinate warp gives every seam an irregular contour without gaps.
+    const centers=pixelV2Geometry.map(p=>[p.reduce((s,v)=>s+v[0],0)/p.length,p.reduce((s,v)=>s+v[1],0)/p.length]);
+    const bayer=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++) {
+      const ox=(x+.5)*100/w,oy=(y+.5)*75/h;
+      const px=ox+.65*Math.sin(oy*.16+ox*.04)+.22*Math.sin(oy*.67);
+      const py=oy+.5*Math.sin(ox*.15-oy*.045)+.18*Math.sin(ox*.76);
+      const index=y*w+x;let pane=-1,edge=Infinity;
+      // Clamp only outer coordinates, leaving the internal warped joints intact.
+      const X=Math.max(.001,Math.min(99.999,px)),Y=Math.max(.001,Math.min(74.999,py));
+      for(let i=0;i<pixelV2Geometry.length;i++) {
+        const poly=pixelV2Geometry[i];let inside=false;
+        for(let a=0,b=poly.length-1;a<poly.length;b=a++) {
+          const u=poly[a],v=poly[b];
+          if((u[1]>Y)!==(v[1]>Y)&&X<(v[0]-u[0])*(Y-u[1])/(v[1]-u[1])+u[0])inside=!inside;
+        }
+        if(!inside)continue;
+        pane=i;
+        for(let a=0;a<poly.length;a++) {
+          const u=poly[a],v=poly[(a+1)%poly.length],dx=v[0]-u[0],dy=v[1]-u[1];
+          if((u[0]===v[0]&&(u[0]===0||u[0]===100))||(u[1]===v[1]&&(u[1]===0||u[1]===75)))continue;
+          const t=Math.max(0,Math.min(1,((X-u[0])*dx+(Y-u[1])*dy)/(dx*dx+dy*dy)));
+          edge=Math.min(edge,Math.hypot(X-u[0]-t*dx,Y-u[1]-t*dy));
+        }
+        break;
+      }
+      if(pane<0||edge<.30){panes[index]=255;continue;}
+      panes[index]=pane;
+      const center=centers[pane],direction=pane*2.39996;
+      const across=((X-center[0])*Math.cos(direction)+(Y-center[1])*Math.sin(direction))/24;
+      const light=.99+across*.24+.09*Math.sin(X*.19+Y*.13+pane);
+      const levels=light*7,blend=Math.max(0,Math.min(1,(levels%1-.25)*2));
+      const shade=(Math.floor(levels)+(blend>(bayer[y%4][x%4]+.5)/16?1:0))/7;
+      shades[index]=shade*(1-.44*Math.max(0,(y/h-.48)/.52));
+    }
+    pixelV2Cache={w,h,panes,shades};
+  }
+  const frame=ctx.createImageData(w,h),{panes,shades}=pixelV2Cache;
+  for(let i=0;i<panes.length;i++) {
+    const p=panes[i],base=glassPalette[(p*7+Math.floor(p/3))%glassPalette.length];
+    for(let k=0;k<3;k++)frame.data[i*4+k]=p===255?[17,23,34][k]:Math.round(base[k]*shades[i]*1.12);
+    frame.data[i*4+3]=255;
+  }
+  ctx.putImageData(frame,0,0);
+}
+
 let pixelResize;
-addEventListener('resize',()=>{clearTimeout(pixelResize);pixelResize=setTimeout(()=>{if(document.body.dataset.theme==='pixel')renderPixelGlass();},120);});
+addEventListener('resize',()=>{clearTimeout(pixelResize);pixelResize=setTimeout(()=>{if(document.body.dataset.theme==='pixel')renderPixelGlass();if(document.body.dataset.theme==='pixel-v2')renderPixelGlassV2();},120);});
 function updateGlassPalette(data) {
   const buckets=new Map();
   for(let i=0;i<data.length;i+=4) {
@@ -368,9 +460,10 @@ function updateGlassPalette(data) {
   renderGlass();
 }
 function setTheme(theme) {
-  const chosen=['current','glass','pixel'].includes(theme)?theme:'glass';
+  const chosen=['current','glass','pixel','pixel-v2'].includes(theme)?theme:'glass';
   document.body.dataset.theme=chosen;
   if(chosen==='pixel') renderPixelGlass();
+  if(chosen==='pixel-v2') renderPixelGlassV2();
   $("theme-choice").value=chosen;
   try{localStorage.setItem('spotify_display_theme',chosen);}catch{}
 }
