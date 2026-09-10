@@ -355,31 +355,51 @@ function renderPixelGlass() {
 }
 // Uneven cut-glass panels, deliberately unlike the regular Voronoi cells in v1.
 function pixelV2Cells() {
-  let seed=91426;
-  const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
-  const area=p=>Math.abs(p.reduce((a,v,i)=>{const q=p[(i+1)%p.length];return a+v[0]*q[1]-q[0]*v[1];},0))/2;
-  const clip=(poly,nx,ny,c)=>{
-    const out=[];
-    for(let i=0;i<poly.length;i++) {
-      const a=poly[i],b=poly[(i+1)%poly.length],da=a[0]*nx+a[1]*ny-c,db=b[0]*nx+b[1]*ny-c;
-      if(da<=0)out.push(a);
-      if((da<=0)!==(db<=0)){const t=da/(da-db);out.push([a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])]);}
-    }
-    return out;
-  };
-  const cells=[[[0,0],[100,0],[100,75],[0,75]]];
-  for(let step=0;cells.length<28&&step<140;step++) {
-    const ranked=cells.map((p,i)=>({i,a:area(p)})).sort((a,b)=>b.a-a.a);
-    const pick=ranked[Math.floor(rand()*Math.min(3,ranked.length))];
-    const poly=cells[pick.i],angle=rand()*Math.PI,nx=Math.cos(angle),ny=Math.sin(angle);
-    const projected=poly.map(p=>p[0]*nx+p[1]*ny),lo=Math.min(...projected),hi=Math.max(...projected);
-    const c=lo+(hi-lo)*(.25+rand()*.5),a=clip(poly,nx,ny,c),b=clip(poly,-nx,-ny,-c);
-    if(area(a)<65||area(b)<65)continue;
-    cells.splice(pick.i,1,a,b);
+  // A composed pane map: broad panes, tall strips and sharp wedges.
+  // Only selected shared seams curve; the rest remain straight.
+  const rows=[
+    [[0,0],[6,0],[24,0],[42,0],[63,0],[85,0],[100,0]],
+    [[0,19],[12,11],[28,8],[40,23],[65,15],[91,25],[100,18]],
+    [[0,39],[8,30],[29,36],[53,31],[69,40],[87,34],[100,41]],
+    [[0,58],[22,49],[38,57],[60,48],[78,59],[94,53],[100,59]],
+    [[0,75],[12,75],[34,75],[56,75],[73,75],[87,75],[100,75]]
+  ];
+  const points=rows.flat();
+  const faces=[];
+  for(let r=0;r<4;r++)for(let c=0;c<6;c++) {
+    const a=r*7+c,b=a+1,d=a+7,e=d+1;
+    // Split a few deliberately chosen panes into narrow triangular accents.
+    if((r===0&&c===4)||(r===2&&c===0)||(r===3&&c===4))faces.push([a,b,d],[b,e,d]);
+    else faces.push([a,b,e,d]);
   }
-  return cells;
+  const curves=new Map();
+  const bow=(a,b,amount)=>curves.set(`${Math.min(a,b)}:${Math.max(a,b)}`,a<b?amount:-amount);
+  // Rounded crowns and shoulders among crisp angular panes.
+  bow(8,9,-4.4); bow(9,16,-3.3); bow(15,16,3.2); bow(8,15,2.0);
+  bow(11,12,-3.3); bow(11,18,2.6);
+  bow(16,17,-2.5); bow(17,24,-3.7); bow(23,24,3.1);
+  bow(19,20,-2.0); bow(19,26,2.8);
+  bow(22,29,3.1); bow(24,31,-3.0); bow(25,32,2.5);
+  const edges=new Map();
+  function edge(a,b) {
+    const lo=Math.min(a,b),hi=Math.max(a,b),key=`${lo}:${hi}`;
+    if(!edges.has(key)) {
+      const u=points[lo],v=points[hi],amount=curves.get(key)||0;
+      const dx=v[0]-u[0],dy=v[1]-u[1],len=Math.hypot(dx,dy);
+      const curve=[];const steps=amount?12:1;
+      for(let i=0;i<=steps;i++) {
+        const t=i/steps,bulge=4*t*(1-t)*amount;
+        curve.push([u[0]+t*dx-dy/len*bulge,u[1]+t*dy+dx/len*bulge]);
+      }
+      edges.set(key,curve);
+    }
+    const path=edges.get(key);
+    return a===lo?path:[...path].reverse();
+  }
+  return faces.map(face=>face.flatMap((a,i)=>edge(a,face[(i+1)%face.length]).slice(0,-1)));
 }
 const pixelV2Geometry=pixelV2Cells();
+const pixelV2Bounds=pixelV2Geometry.map(p=>[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))]);
 let pixelV2Cache;
 function renderPixelGlassV2() {
   const canvas=$("pixel-glass"),w=600,h=Math.max(240,Math.min(1000,Math.round(w*innerHeight/innerWidth)));
@@ -387,17 +407,19 @@ function renderPixelGlassV2() {
   const ctx=canvas.getContext('2d');
   if(!pixelV2Cache||pixelV2Cache.w!==w||pixelV2Cache.h!==h) {
     const panes=new Uint8Array(w*h),shades=new Float32Array(w*h);
-    // Shared coordinate warp gives every seam an irregular contour without gaps.
+    // Shared hand-shaped edges meet exactly; no global waviness.
     const centers=pixelV2Geometry.map(p=>[p.reduce((s,v)=>s+v[0],0)/p.length,p.reduce((s,v)=>s+v[1],0)/p.length]);
     const bayer=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
     for(let y=0;y<h;y++)for(let x=0;x<w;x++) {
       const ox=(x+.5)*100/w,oy=(y+.5)*75/h;
-      const px=ox+.65*Math.sin(oy*.16+ox*.04)+.22*Math.sin(oy*.67);
-      const py=oy+.5*Math.sin(ox*.15-oy*.045)+.18*Math.sin(ox*.76);
+      const px=ox;
+      const py=oy;
       const index=y*w+x;let pane=-1,edge=Infinity;
       // Clamp only outer coordinates, leaving the internal warped joints intact.
       const X=Math.max(.001,Math.min(99.999,px)),Y=Math.max(.001,Math.min(74.999,py));
       for(let i=0;i<pixelV2Geometry.length;i++) {
+        const bounds=pixelV2Bounds[i];
+        if(X<bounds[0]||Y<bounds[1]||X>bounds[2]||Y>bounds[3])continue;
         const poly=pixelV2Geometry[i];let inside=false;
         for(let a=0,b=poly.length-1;a<poly.length;b=a++) {
           const u=poly[a],v=poly[b];
