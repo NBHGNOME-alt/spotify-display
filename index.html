@@ -178,20 +178,20 @@
   font-weight: 400;
 }
 #pixel-glass { position:fixed; inset:0; width:100%; height:100%; z-index:0; display:none; image-rendering:pixelated; image-rendering:crisp-edges; }
-body:is([data-theme="pixel"],[data-theme="pixel-v2"]) #pixel-glass { display:block; }
-body:is([data-theme="pixel"],[data-theme="pixel-v2"]) #glass { visibility:hidden; }
+body:is([data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #pixel-glass { display:block; }
+body:is([data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #glass { visibility:hidden; }
 #glass { position:fixed; inset:0; width:100%; height:100%; z-index:0; display:none; background:#22232b; }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #glass { display:block; }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #backdrop { display:none; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #glass { display:block; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #backdrop { display:none; }
 /* Continue the patterned background through the iPad bottom safe area. */
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #glass,
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #pixel-glass {
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #glass,
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #pixel-glass {
   bottom:auto;
   height:calc(100% + env(safe-area-inset-bottom,0px));
   min-height:100lvh;
 }
 
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #app {
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #app {
   grid-template-columns:minmax(0,1fr) minmax(0,38vw);
   grid-template-rows:minmax(0,1fr);
   align-items:center;
@@ -199,22 +199,22 @@ body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #app 
   padding-left:max(34px,env(safe-area-inset-left));
   padding-right:max(34px,env(safe-area-inset-right));
 }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #art-wrap { padding-top:0; justify-content:flex-end; }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #art { width:min(57vw,78vh); height:auto; aspect-ratio:1; }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #meta { align-self:end; padding-bottom:5vh; }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #title { white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #artist { white-space:normal; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #art-wrap { padding-top:0; justify-content:flex-end; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #art { width:min(57vw,78vh); height:auto; aspect-ratio:1; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #meta { align-self:end; padding-bottom:5vh; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #title { white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #artist { white-space:normal; }
 
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #title,
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #artist {
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #title,
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #artist {
   font-family:"Fayte Pixel Soft",Georgia,serif;
   font-weight:400;
   font-synthesis:none;
   letter-spacing:0;
 }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #title { font-size:clamp(44px,7.4vw,104px); line-height:1.08; }
-body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"]) #artist { color:#ece3c8; font-size:clamp(29px,4.2vw,55px); line-height:1.15; }
-body[data-theme="pixel-v2"] #title {
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #title { font-size:clamp(44px,7.4vw,104px); line-height:1.08; }
+body:is([data-theme="glass"],[data-theme="pixel"],[data-theme="pixel-v2"],[data-theme="pixel-v3"]) #artist { color:#ece3c8; font-size:clamp(29px,4.2vw,55px); line-height:1.15; }
+body:is([data-theme="pixel-v2"],[data-theme="pixel-v3"]) #title {
   font-size:clamp(22px,3.7vw,52px);
   line-height:1.15;
   display:block;
@@ -224,7 +224,7 @@ body[data-theme="pixel-v2"] #title {
   overflow-wrap:anywhere;
   text-overflow:clip;
 }
-body[data-theme="pixel-v2"] #meta { max-height:100%; overflow-y:auto; }
+body:is([data-theme="pixel-v2"],[data-theme="pixel-v3"]) #meta { max-height:100%; overflow-y:auto; }
 #tapzone { width:54px; height:54px; padding:0; margin:0; border-radius:0; background:transparent; color:white; opacity:.18; font-size:24px; z-index:11; }
 #tapzone:hover,#tapzone:focus-visible { opacity:1; }
 #menu { top:58px; width:min(310px,calc(100vw - 36px)); padding:18px; background:#18181df2; z-index:12; visibility:hidden; }
@@ -255,7 +255,7 @@ body[data-theme="pixel-v2"] #meta { max-height:100%; overflow-y:auto; }
   <button id="tapzone" aria-label="Appearance and settings" aria-controls="menu" aria-expanded="false">⋯</button>
   <div id="menu">
     <label for="theme-choice">Appearance</label>
-    <select id="theme-choice"><option value="glass">Stained Glass</option><option value="pixel">Pixel Stained Glass</option><option value="pixel-v2">Pixel Glass v2</option><option value="current">Basic</option></select>
+    <select id="theme-choice"><option value="glass">Stained Glass</option><option value="pixel">Pixel Stained Glass</option><option value="pixel-v2">Pixel Glass v2</option><option value="pixel-v3">Pixel Glass v3</option><option value="current">Basic</option></select>
     <button id="logout">Reset Spotify login</button>
   </div>
 
@@ -313,7 +313,7 @@ function glassCells() {
 const paneGeometry=glassCells();
 function renderGlass() {
   if(document.body.dataset.theme==='pixel')renderPixelGlass();
-  if(document.body.dataset.theme==='pixel-v2')renderPixelGlassV2();
+  if(document.body.dataset.theme==='pixel-v2')renderPixelGlassV2();if(document.body.dataset.theme==='pixel-v3')renderPixelMockup();
   const rgb=(c)=>`rgb(${c.map(v=>Math.max(0,Math.min(255,Math.round(v)))).join(',')})`;
   const gradients=glassPalette.map((c,i)=>`<linearGradient id="pane-${i}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${rgb(c.map(v=>v*1.12))}"/><stop offset="1" stop-color="${rgb(c.map(v=>v*.82))}"/></linearGradient>`).join('');
   const panes=paneGeometry.map((poly,i)=>`<polygon points="${poly.map(p=>p.map(v=>v.toFixed(3)).join(',')).join(' ')}" fill="url(#pane-${(i*7+Math.floor(i/7)*3)%glassPalette.length})" stroke="#17161e" stroke-width=".42" stroke-linejoin="round"/>`).join('');
@@ -455,8 +455,109 @@ function renderPixelGlassV2() {
   ctx.putImageData(frame,0,0);
 }
 
+function pixelMockupCells() {
+  // Junctions traced from the approved mockup, not rows or generated cells.
+  const points={
+    A:[0,0],B:[60,0],C:[250,0],D:[570,0],E:[860,0],F:[1150,0],G:[1365,0],H:[1448,0],
+    I:[80,100],J:[240,155],L:[550,155],M:[550,225],N:[815,188],O:[950,165],P:[1185,85],Q:[1315,245],R:[1448,250],
+    S:[0,245],T:[115,305],U:[145,485],V:[305,390],W:[400,390],X:[400,250],Y:[525,305],Z:[760,430],
+    aa:[945,315],ab:[1185,450],ac:[1335,480],ad:[1448,415],
+    ae:[0,615],af:[165,500],ag:[200,810],ah:[400,610],ai:[550,690],aj:[795,585],ak:[830,690],al:[920,625],am:[950,555],an:[1265,545],
+    aq:[0,880],ar:[220,800],as:[425,1086],at:[0,1086],au:[595,735],av:[595,1086],aw:[695,805],ax:[795,860],ay:[835,1086],az:[935,805],ba:[1000,845],bb:[1000,1086],bc:[1215,700],bd:[1448,770],be:[1448,1086],
+    p0:[400,500],p1:[230,245],p2:[265,345]
+  };
+  const faces=[
+    ['A','B','I','T','S'],['B','C','J','I'],['C','D','L','J'],['D','E','N','M','L'],
+    ['J','L','M','Y','X'],['E','F','O','N'],['M','N','O','aa','Z','Y'],
+    ['O','F','P','ab','aa'],['F','G','Q','ac','ab','P'],['G','H','R','Q'],['Q','R','ad','ac'],
+    ['aa','ab','ac','an','am'],['Z','aa','am','al','ak','aj'],
+    ['Y','Z','aj','ai','ah','p0'],['X','Y','p0','W'],['J','X','W','V','p2','p1'],
+    ['I','J','p1','p2','V','U','T'],['S','T','U','ae'],['ae','U','af','ag','aq'],
+    ['U','V','W','p0','ah','ar','ag','af'],['ah','ai','au','av','as','ar'],
+    ['ai','aj','ak','aw','au'],['aw','ak','al','az','ax'],['al','am','an','bc','az'],
+    ['an','ac','ad','bd','bc'],['bc','bd','be','bb','ba','az'],
+    ['ax','az','ba','bb','ay'],['au','aw','ax','ay','av'],['aq','ag','ar','as','at']
+  ];
+  const curveMap={'J:L':-95,'ah:ar':-18,'al:az':20};
+  const edgeCache=new Map();
+  function edge(a,b) {
+    const lo=a<b?a:b,hi=a<b?b:a,key=lo+':'+hi;
+    if(!edgeCache.has(key)) {
+      const u=points[lo],v=points[hi],bow=curveMap[key]||0,dx=v[0]-u[0],dy=v[1]-u[1],len=Math.hypot(dx,dy),path=[];
+      const steps=bow?18:1;
+      for(let i=0;i<=steps;i++){const t=i/steps,k=4*t*(1-t)*bow;path.push([(u[0]+t*dx-dy/len*k)/14.48,(u[1]+t*dy+dx/len*k)/14.48]);}
+      edgeCache.set(key,path);
+    }
+    const path=edgeCache.get(key);return a===lo?path:[...path].reverse();
+  }
+  return faces.map(f=>f.flatMap((a,i)=>edge(a,f[(i+1)%f.length]).slice(0,-1)));
+}
+const pixelMockupGeometry=pixelMockupCells();
+const pixelMockupBounds=pixelMockupGeometry.map(p=>[Math.min(...p.map(v=>v[0])),Math.min(...p.map(v=>v[1])),Math.max(...p.map(v=>v[0])),Math.max(...p.map(v=>v[1]))]);
+let pixelMockupCache;
+function renderPixelMockup() {
+  const canvas=$("pixel-glass"),w=300,h=Math.max(120,Math.min(500,Math.round(w*innerHeight/innerWidth)));
+  canvas.width=w;canvas.height=h;
+  const ctx=canvas.getContext('2d');
+  if(!pixelMockupCache||pixelMockupCache.w!==w||pixelMockupCache.h!==h) {
+    const panes=new Uint8Array(w*h),shades=new Float32Array(w*h);
+    // Shared hand-shaped edges meet exactly; no global waviness.
+    const centers=pixelMockupGeometry.map(p=>[p.reduce((s,v)=>s+v[0],0)/p.length,p.reduce((s,v)=>s+v[1],0)/p.length]);
+    const bayer=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++) {
+      const ox=(x+.5)*100/w,oy=(y+.5)*75/h;
+      const px=ox;
+      const py=oy;
+      const index=y*w+x;let pane=-1,edge=Infinity;
+      // Clamp only outer coordinates, leaving the internal warped joints intact.
+      const X=Math.max(.001,Math.min(99.999,px)),Y=Math.max(.001,Math.min(74.999,py));
+      for(let i=0;i<pixelMockupGeometry.length;i++) {
+        const bounds=pixelMockupBounds[i];
+        if(X<bounds[0]||Y<bounds[1]||X>bounds[2]||Y>bounds[3])continue;
+        const poly=pixelMockupGeometry[i];let inside=false;
+        for(let a=0,b=poly.length-1;a<poly.length;b=a++) {
+          const u=poly[a],v=poly[b];
+          if((u[1]>Y)!==(v[1]>Y)&&X<(v[0]-u[0])*(Y-u[1])/(v[1]-u[1])+u[0])inside=!inside;
+        }
+        if(!inside)continue;
+        pane=i;
+        for(let a=0;a<poly.length;a++) {
+          const u=poly[a],v=poly[(a+1)%poly.length],dx=v[0]-u[0],dy=v[1]-u[1];
+          if((u[0]===v[0]&&(u[0]===0||u[0]===100))||(u[1]===v[1]&&(u[1]===0||u[1]===75)))continue;
+          const t=Math.max(0,Math.min(1,((X-u[0])*dx+(Y-u[1])*dy)/(dx*dx+dy*dy)));
+          edge=Math.min(edge,Math.hypot(X-u[0]-t*dx,Y-u[1]-t*dy));
+        }
+        break;
+      }
+      if(pane<0||edge<.40){panes[index]=255;continue;}
+      panes[index]=pane;
+      const center=centers[pane];
+      // Flat glass tones with isolated pixel clusters instead of fine gradient bands.
+      const bounds=pixelMockupBounds[pane],spanX=bounds[2]-bounds[0],spanY=bounds[3]-bounds[1];
+      const hx=center[0]-spanX*.20,hy=center[1]-spanY*.18;
+      const lightPatch=Math.max(0,1-Math.hypot((X-hx)/(spanX*.62),(Y-hy)/(spanY*.60)));
+      const darkPatch=Math.max(0,1-Math.hypot((X-center[0]-spanX*.26)/(spanX*.58),(Y-center[1]-spanY*.25)/(spanY*.58)));
+      const hash=((Math.imul(x+pane*97,374761393)^Math.imul(y,668265263))>>>0)/4294967296;
+      const threshold=(bayer[y%4][x%4]+.5)/16;
+      let shade=1;
+      if(lightPatch>.28&&threshold<(lightPatch-.28)*1.05+(hash-.5)*.12)shade=1.15;
+      else if(darkPatch>.30&&threshold<(darkPatch-.30)*.90)shade=.84;
+      shades[index]=shade*(1-.38*Math.max(0,(y/h-.52)/.48));
+    }
+    pixelMockupCache={w,h,panes,shades};
+  }
+  const frame=ctx.createImageData(w,h),{panes,shades}=pixelMockupCache;
+  for(let i=0;i<panes.length;i++) {
+    const p=panes[i],base=glassPalette[(p*7+Math.floor(p/3))%glassPalette.length];
+    for(let k=0;k<3;k++)frame.data[i*4+k]=p===255?[17,23,34][k]:Math.round(base[k]*shades[i]*1.12);
+    frame.data[i*4+3]=255;
+  }
+  ctx.putImageData(frame,0,0);
+}
+
+
 let pixelResize;
-addEventListener('resize',()=>{clearTimeout(pixelResize);pixelResize=setTimeout(()=>{if(document.body.dataset.theme==='pixel')renderPixelGlass();if(document.body.dataset.theme==='pixel-v2')renderPixelGlassV2();},120);});
+addEventListener('resize',()=>{clearTimeout(pixelResize);pixelResize=setTimeout(()=>{if(document.body.dataset.theme==='pixel')renderPixelGlass();if(document.body.dataset.theme==='pixel-v2')renderPixelGlassV2();if(document.body.dataset.theme==='pixel-v3')renderPixelMockup();},120);});
 function updateGlassPalette(data) {
   const buckets=new Map();
   for(let i=0;i<data.length;i+=4) {
@@ -482,10 +583,11 @@ function updateGlassPalette(data) {
   renderGlass();
 }
 function setTheme(theme) {
-  const chosen=['current','glass','pixel','pixel-v2'].includes(theme)?theme:'glass';
+  const chosen=['current','glass','pixel','pixel-v2','pixel-v3'].includes(theme)?theme:'glass';
   document.body.dataset.theme=chosen;
   if(chosen==='pixel') renderPixelGlass();
   if(chosen==='pixel-v2') renderPixelGlassV2();
+  if(chosen==='pixel-v3') renderPixelMockup();
   $("theme-choice").value=chosen;
   try{localStorage.setItem('spotify_display_theme',chosen);}catch{}
 }
